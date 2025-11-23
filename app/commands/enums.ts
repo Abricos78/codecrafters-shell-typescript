@@ -3,4 +3,5 @@ export enum COMMANDS {
     ECHO = 'echo',
     TYPE = 'type',
     PWD = 'pwd',
+    CD = 'cd',
 }

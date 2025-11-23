@@ -1,5 +1,5 @@
 import { createInterface } from "readline";
-import { COMMANDS, type as commandType, echo, pwd } from "./commands";
+import { cd, COMMANDS, type as commandType, echo, pwd } from "./commands";
 import { checkCommandPath, getFirstWordAndRest } from "./lib";
 import { execFileSync, spawnSync } from "child_process";
 
@@ -25,6 +25,9 @@ const callbackQuestion = (answer: string) => {
       break
     case COMMANDS.PWD:
       pwd(rl)
+      break
+    case COMMANDS.CD:
+      cd(rl, args)
       break
     default:
       const fullPath = checkCommandPath(command)
