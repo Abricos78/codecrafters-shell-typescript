@@ -9,6 +9,7 @@ export async function type(rl: Interface, args: string) {
         case COMMANDS.ECHO:
         case COMMANDS.EXIT:
         case COMMANDS.TYPE:
+        case COMMANDS.PWD:
             rl.write(`${command} is a shell builtin\n`)
             break;
         default:
