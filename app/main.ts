@@ -5,8 +5,12 @@ const rl = createInterface({
   output: process.stdout,
 });
 
+const startPrompt = '$ '
 
-rl.question("$ ", (answer) => {
-  rl.write(`${answer}: command not found`)
-  rl.close();
-});
+const callbackQuestion = (answer: string) => {
+  rl.write(`${answer}: command not found \n`)
+  rl.question(startPrompt, callbackQuestion)
+}
+
+
+rl.question(startPrompt, callbackQuestion);
