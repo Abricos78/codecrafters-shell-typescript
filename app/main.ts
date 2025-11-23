@@ -1,5 +1,6 @@
 import { createInterface } from "readline";
-import { COMMANDS } from "./commandsEnum";
+import { COMMANDS, type as commandType, echo } from "./commands";
+import { getFirstWordAndRest } from "./lib";
 
 const rl = createInterface({
   input: process.stdin,
@@ -9,16 +10,20 @@ const rl = createInterface({
 const startPrompt = '$ '
 
 const callbackQuestion = (answer: string) => {
+  const [command, args] = getFirstWordAndRest(answer)
 
-  if (answer.startsWith(COMMANDS.EXIT)) {
+  switch (command) {
+    case COMMANDS.EXIT:
       rl.close()
       return
-  }
-
-  if (answer.startsWith(COMMANDS.ECHO)) {
-    rl.write(`${answer.substring(COMMANDS.ECHO.length + 1)}\n`)
-  } else {
-    rl.write(`${answer}: command not found \n`)
+    case COMMANDS.ECHO:
+      echo(rl, args)
+      break
+    case COMMANDS.TYPE:
+      commandType(rl, args)
+      break
+    default:
+      rl.write(`${answer}: command not found\n`)
   }
 
   rl.question(startPrompt, callbackQuestion)
