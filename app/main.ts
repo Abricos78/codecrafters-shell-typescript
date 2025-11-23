@@ -8,6 +8,11 @@ const rl = createInterface({
 const startPrompt = '$ '
 
 const callbackQuestion = (answer: string) => {
+  if (answer === 'exit') {
+    rl.close()
+    return
+  }
+
   rl.write(`${answer}: command not found \n`)
   rl.question(startPrompt, callbackQuestion)
 }
