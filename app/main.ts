@@ -1,6 +1,7 @@
 import { createInterface } from "readline";
 import { COMMANDS, type as commandType, echo } from "./commands";
-import { getFirstWordAndRest } from "./lib";
+import { checkCommandPath, getFirstWordAndRest } from "./lib";
+import { execFileSync, spawnSync } from "child_process";
 
 const rl = createInterface({
   input: process.stdin,
@@ -23,7 +24,14 @@ const callbackQuestion = (answer: string) => {
       commandType(rl, args)
       break
     default:
-      rl.write(`${answer}: command not found\n`)
+      const fullPath = checkCommandPath(command)
+
+      if (fullPath) {
+        const res = execFileSync(command, args.split(' '))
+        rl.write(`${res}`)
+      } else {
+        rl.write(`${answer}: command not found\n`)
+      }
   }
 
   rl.question(startPrompt, callbackQuestion)
