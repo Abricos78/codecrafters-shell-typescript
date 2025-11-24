@@ -1,7 +1,7 @@
 import { createInterface } from "readline";
 import { cd, COMMANDS, type as commandType, echo, pwd } from "./commands";
-import { checkCommandPath, getFirstWordAndRest } from "./lib";
-import { execFileSync, spawnSync } from "child_process";
+import { checkCommandPath, getFirstWordAndRest, prepareArgs } from "./lib";
+import { execFileSync } from "child_process";
 
 const rl = createInterface({
   input: process.stdin,
@@ -11,29 +11,31 @@ const rl = createInterface({
 const startPrompt = '$ '
 
 const callbackQuestion = (answer: string) => {
-  const [command, args] = getFirstWordAndRest(answer)
+  const [command, unprepareArgs] = getFirstWordAndRest(answer)
+  const arrArgs = prepareArgs(unprepareArgs?.trim())
+  const str = arrArgs.join(' ')
 
   switch (command) {
     case COMMANDS.EXIT:
       rl.close()
       return
     case COMMANDS.ECHO:
-      echo(rl, args)
+      echo(rl, str)
       break
     case COMMANDS.TYPE:
-      commandType(rl, args)
+      commandType(rl, str)
       break
     case COMMANDS.PWD:
       pwd(rl)
       break
     case COMMANDS.CD:
-      cd(rl, args)
+      cd(rl, str)
       break
     default:
       const fullPath = checkCommandPath(command)
 
       if (fullPath) {
-        const res = execFileSync(command, args.split(' '))
+        const res = execFileSync(command, arrArgs)
         rl.write(`${res}`)
       } else {
         rl.write(`${answer}: command not found\n`)
