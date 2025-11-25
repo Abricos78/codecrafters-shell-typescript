@@ -7,33 +7,60 @@ export function prepareArgs(args?: string) {
 
     let str = ''
 
-    for (let i = 0; i < args.length; i++) {
+    firstCycle: for (let i = 0; i < args.length; i++) {
         const char = args[i]
+
+        if (char === '\\') {
+            const specialExpression = `${char}${args[++i] || ''}`
+            const lastChar = specialExpression.at(-1)!
+
+            switch (specialExpression) {
+                case '\\"':
+                    if (singleQuotesStack.length) str += specialExpression
+                    else str += lastChar
+                    continue firstCycle
+                case '\\\'':
+                    if (singleQuotesStack.length || doubleQuotesStack.length) str += specialExpression
+                    else str += lastChar
+                    continue firstCycle
+                case '\\n':
+                case '\\$':
+                case '\\`':
+                    if (singleQuotesStack.length || doubleQuotesStack.length) str += specialExpression
+                    else str += lastChar
+                    continue firstCycle
+                case '\\\\':
+                    str += lastChar
+                    continue firstCycle
+                case '\\ ':
+                    str += ' '
+                    continue firstCycle
+                default:
+                    str += specialExpression
+                    continue firstCycle
+            }
+        }
 
         if (char === '\"') {
             if (!doubleQuotesStack.length) {
                 doubleQuotesStack.push(char)
             } else {
                 doubleQuotesStack.pop()
+                singleQuotesStack.length = 0
             }
             continue
         }
 
-        if (char === '\'' && !doubleQuotesStack.length) {
+        if (char === '\'') {
             if (!singleQuotesStack.length) {
                 singleQuotesStack.push(char)
             } else {
                 singleQuotesStack.pop()
             }
-            continue
+            if (!doubleQuotesStack.length) continue
         }
 
-        if (doubleQuotesStack.length) {
-            str += char
-            continue
-        }
-
-        if (singleQuotesStack.length) {
+        if (doubleQuotesStack.length || singleQuotesStack.length) {
             str += char
             continue
         }
