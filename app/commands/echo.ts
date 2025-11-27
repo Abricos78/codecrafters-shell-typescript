@@ -1,5 +1,3 @@
-import type { Interface } from "readline";
-
-export function echo(rl: Interface, args: string) {
-    rl.write(`${args}\n`)
+export function echo(args: string) {
+    return `${args}\n`
 }
