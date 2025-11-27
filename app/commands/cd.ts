@@ -1,10 +1,7 @@
-import type { Interface } from "readline";
-
-
 export const cd = (function() {
     const HOME = process.env.HOME!
 
-    return (rl: Interface, directory: string) => {
+    return (directory: string) => {
         try {
             if (directory === '~') {
                 process.chdir(HOME)
@@ -12,7 +9,7 @@ export const cd = (function() {
                 process.chdir(directory)
             }
         } catch(e) {
-            rl.write(`cd: ${directory}: No such file or directory\n`)
+            return `cd: ${directory}: No such file or directory\n`
         }
     }
 
