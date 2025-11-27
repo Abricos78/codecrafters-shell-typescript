@@ -1,8 +1,7 @@
-import type { Interface } from "readline";
 import { checkCommandPath, getFirstWordAndRest } from "../lib";
 import { COMMANDS } from "./enums";
 
-export async function type(rl: Interface, args: string) {
+export function type(args: string) {
     const [command] = getFirstWordAndRest(args)
 
     switch (command) {
@@ -11,16 +10,12 @@ export async function type(rl: Interface, args: string) {
         case COMMANDS.TYPE:
         case COMMANDS.PWD:
         case COMMANDS.CD:
-            rl.write(`${command} is a shell builtin\n`)
-            break;
+            return `${command} is a shell builtin\n`
         default:
             const fullPath = checkCommandPath(command)
 
-            if (fullPath) {
-                rl.write(`${command} is ${fullPath}\n`)
-            } else {
-                rl.write(`${command}: not found\n`)
-            }
-    
+            if (fullPath) return `${command} is ${fullPath}\n`
+
+            return `${command}: not found\n`
     }
 }
