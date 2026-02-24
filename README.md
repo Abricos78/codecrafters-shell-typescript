@@ -1,34 +1,27 @@
-[![progress-banner](https://backend.codecrafters.io/progress/shell/ff26c7a5-ba7b-4ec9-9b11-31c05ea7ceb8)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# Vue Crypto Table
 
-This is a starting point for TypeScript solutions to the
-["Build Your Own Shell" Challenge](https://app.codecrafters.io/courses/shell/overview).
+Single-page Vue app that displays cryptocurrency data from:
 
-In this challenge, you'll build your own POSIX compliant shell that's capable of
-interpreting shell commands, running external programs and builtin commands like
-cd, pwd, echo and more. Along the way, you'll learn about shell command parsing,
-REPLs, builtin commands, and more.
+`https://api.coinlore.net/api/tickers/`
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+## Features
 
-# Passing the first stage
+- API integration and data loading
+- Table rendering without UI/DataGrid libraries
+- Column sorting (ascending/descending)
+- Column-level filtering ("search by cell value")
+- Global search across all table cells
+- Custom client-side pagination
 
-The entry point for your `shell` implementation is in `app/main.ts`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
+## Run
 
 ```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
+npm install
+npm run dev
 ```
 
-Time to move on to the next stage!
+Build for production:
 
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `bun (1.2)` installed locally
-1. Run `./your_program.sh` to run your program, which is implemented in
-   `app/main.ts`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+```sh
+npm run build
+```
